@@ -1,3 +1,4 @@
+
 menu = {
     "americano": 100,
     "latte": 150,
@@ -6,20 +7,59 @@ menu = {
     "mocha": 180
 }
 
-print("~ ~ ~ COFFEE MENU ~ ~ ~")
-for coffee, price in menu.items():
-    print(coffee,"₹",price)
+print("\n~ ~ ~ ☕ COFFEE MENU ~ ~ ~")
 
-order = input("What coffee would you like to order? ")
+for coffee, price in menu.items():
+    print(coffee, "₹", price)
+
+# Coffee selection
+order = input("\nWhat coffee would you like to order? ").lower()
 
 if order in menu:
-    print("You selected",order)
+    print("You selected:", order)
+
+    # Milk selection
+    milk = input("""
+Choose your milk:
+1. Regular
+2. Oat (+₹20)
+3. Almond (+₹30)
+
+Enter your choice: 
+""")
+
+    if milk == "1":
+        milk_name = "Regular"
+        milk_price = 0
+
+    elif milk == "2":
+        milk_name = "Oat"
+        milk_price = 20
+
+    elif milk == "3":
+        milk_name = "Almond"
+        milk_price = 30
+
+    else:
+        print("Invalid milk choice. Regular milk selected.")
+        milk_name = "Regular"
+        milk_price = 0
+
+    # Quantity
+    quantity = int(input("\nHow many cups would you like? "))
+
+    # Calculate total
+    coffee_price = menu[order]
+    total = (coffee_price + milk_price) * quantity
+
+    # Order summary
+    print("\n~ ~ ~ YOUR ORDER ~ ~ ~")
+    print("Coffee:", order)
+    print("Milk:", milk_name)
+    print("Quantity:", quantity)
+    print("Total: ₹", total)
+
+    print("\n☕ Enjoy your drink!")
+
 else:
     print("Sorry, we don't have that coffee on the menu.")
-
-quantity = int(input("How many cups would you like to order? "))
-total = menu[order] * quantity
-
-print("You ordered",quantity,"cups of",order,"for a total of ₹",total)
-
-print("Enjoy your drink!")

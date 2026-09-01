@@ -7,7 +7,7 @@ menu = {
     "mocha": 180
 }
 
-print("\n~ ~ ~ ☕ COFFEE MENU ~ ~ ~")
+print("\n~ ~ ~  COFFEE MENU ~ ~ ~")
 
 for coffee, price in menu.items():
     print(coffee, "₹", price)
@@ -102,7 +102,7 @@ Enter your choice:
     print("Order Type:",order_type)
     print("Total: ₹", total)
 
-    print("\n☕ Enjoy your drink!")
+    print("\n Enjoy your drink!")
 
 else:
     print("Sorry, we don't have that coffee on the menu.")

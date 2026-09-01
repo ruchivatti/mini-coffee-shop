@@ -75,16 +75,17 @@ Enter your choice:
         size_price = 0
 
     # Quantity
-    try:
-        quantity = int(input("\nHow many cups would you like? "))
+    while True:
+        try:
+            quantity = int(input("\nHow many cups would you like? "))
 
-        if quantity <= 0:
-            print("Invalid quantity. Please enter a number greater than 0.")
-            quantity = 1
+            if quantity > 0:
+                break
 
-    except ValueError:
-        print("Invalid quantity. Defaulting to 1 cup.")
-        quantity = 1
+            print("Quantity must be greater than 0. Please try again.")
+
+        except ValueError:
+            print("Please enter a valid number.")
 
     # Order type
     order_type = input("""
@@ -120,7 +121,7 @@ Enter your choice:
     print("Order Type:", order_type)
     print("Total: ₹", total)
 
-    print("\n Enjoy your drink!")
+    print("\nEnjoy your drink!")
 
 else:
     print("Sorry, we don't have that coffee on the menu.")

@@ -1,20 +1,28 @@
 menu = {
-    "americano": 100,
-    "latte": 150,
-    "cappuccino": 200,
-    "espresso": 120,
-    "mocha": 180
+    "Americano": 100,
+    "Latte": 150,
+    "Cappuccino": 200,
+    "Espresso": 120,
+    "Mocha": 180
 }
+
+print("\n~ ~ ~ WELCOME TO THE COFFEE SHOP ~ ~ ~")
 
 print("\n~ ~ ~ COFFEE MENU ~ ~ ~")
 
 for coffee, price in menu.items():
     print(coffee, "₹", price)
 
-# Coffee selection
-order = input("\nWhat coffee would you like to order? ").lower()
+cart = []
 
-if order in menu:
+while True:
+
+    # Coffee selection
+    order = input("\nWhat coffee would you like to order? ").title()
+
+    if order not in menu:
+        print("Sorry, we don't have that coffee on the menu.")
+        continue
 
     print("You selected:", order)
 
@@ -70,14 +78,17 @@ Enter your choice:
         size_price = 50
 
     else:
-        print("Invalid size choice. Defaulting to 'Small'.")
+        print("Invalid size choice. Defaulting to Small.")
         size_name = "Small"
         size_price = 0
 
     # Quantity
     while True:
+
         try:
-            quantity = int(input("\nHow many cups would you like? "))
+            quantity = int(
+                input("\nHow many cups would you like? ")
+            )
 
             if quantity > 0:
                 break
@@ -104,24 +115,53 @@ Enter your choice:
         order_type = "To go"
 
     else:
-        print("Invalid order type. Defaulting to 'For here'.")
+        print("Invalid order type. Defaulting to For here.")
         order_type = "For here"
 
-    # Calculate total
+    # Calculate price
     coffee_price = menu[order]
 
     total = (coffee_price + milk_price + size_price) * quantity
 
-    # Order summary
-    print("\n~ ~ ~ YOUR ORDER ~ ~ ~")
-    print("Coffee:", order)
-    print("Milk:", milk_name)
-    print("Size:", size_name)
-    print("Quantity:", quantity)
-    print("Order Type:", order_type)
-    print("Total: ₹", total)
+    # Save order in cart
+    cart.append({
+        "coffee": order,
+        "milk": milk_name,
+        "size": size_name,
+        "quantity": quantity,
+        "order_type": order_type,
+        "total": total
+    })
 
-    print("\nEnjoy your drink!")
+    print("\nAdded to your order!")
+    print("Current item total: ₹", total)
 
-else:
-    print("Sorry, we don't have that coffee on the menu.")
+    # Ask for another coffee
+    another = input(
+        "\nWould you like to order another coffee? (yes/no): "
+    ).lower()
+
+    if another != "yes":
+        break
+
+
+# Final order summary
+print("\n~ ~ ~ YOUR ORDER ~ ~ ~")
+
+grand_total = 0
+
+for item in cart:
+
+    print("\nCoffee:", item["coffee"])
+    print("Milk:", item["milk"])
+    print("Size:", item["size"])
+    print("Quantity:", item["quantity"])
+    print("Order Type:", item["order_type"])
+    print("Item Total: ₹", item["total"])
+
+    grand_total += item["total"]
+
+print("\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
+print("GRAND TOTAL: ₹", grand_total)
+
+print("\nThank you for visiting! Enjoy your coffee!")

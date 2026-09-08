@@ -6,25 +6,36 @@ menu = {
     "Mocha": 180
 }
 
+
+def show_menu():
+    print("\n~ ~ ~ COFFEE MENU ~ ~ ~")
+
+    for coffee, price in menu.items():
+        print(coffee, "₹", price)
+
+
+def coffee_order():
+    while True:
+        order = input("\nWhat coffee would you like to order? ").title()
+
+        if order in menu:
+            print("You selected:", order)
+            return order
+
+        else:
+            print("Sorry, we don't have that coffee on the menu.")
+
+
 print("\n~ ~ ~ WELCOME TO THE COFFEE SHOP ~ ~ ~")
 
-print("\n~ ~ ~ COFFEE MENU ~ ~ ~")
-
-for coffee, price in menu.items():
-    print(coffee, "₹", price)
-
 cart = []
+
+show_menu()
 
 while True:
 
     # Coffee selection
-    order = input("\nWhat coffee would you like to order? ").title()
-
-    if order not in menu:
-        print("Sorry, we don't have that coffee on the menu.")
-        continue
-
-    print("You selected:", order)
+    order = coffee_order()
 
     # Milk selection
     milk = input("""
@@ -84,7 +95,6 @@ Enter your choice:
 
     # Quantity
     while True:
-
         try:
             quantity = int(
                 input("\nHow many cups would you like? ")
@@ -180,6 +190,7 @@ What would you like to do?
                     )
 
                     if 1 <= remove <= len(cart):
+
                         removed_item = cart.pop(remove - 1)
 
                         print(
@@ -191,7 +202,8 @@ What would you like to do?
 
                     else:
                         print(
-                            "Invalid order number. Please choose a number from the list."
+                            "Invalid order number. "
+                            "Please choose a number from the list."
                         )
 
                 except ValueError:
@@ -213,6 +225,7 @@ print("\n~ ~ ~ YOUR ORDER ~ ~ ~")
 grand_total = 0
 
 if len(cart) == 0:
+
     print("Your cart is empty.")
 
 else:

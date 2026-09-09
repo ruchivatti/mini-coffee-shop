@@ -48,23 +48,6 @@ Enter your choice:
     # Quantity
     quantity = int(input("\nHow many cups would you like? "))
 
-    #order_type
-    order_type=input("""
-Choose order type:
-1. For here
-2. To go
-
-Enter your choice: 
-""")
-
-    if order_type == "1":
-        order_type = "For here"
-    elif order_type == "2":
-        order_type = "To go"
-    else:
-        print("Invalid order type. Defaulting to 'For here'.")
-        order_type = "For here"
-
     # Calculate total
     coffee_price = menu[order]
     total = (coffee_price + milk_price) * quantity
@@ -74,7 +57,6 @@ Enter your choice:
     print("Coffee:", order)
     print("Milk:", milk_name)
     print("Quantity:", quantity)
-    print("Order Type:",order_type)
     print("Total: ₹", total)
 
     print("\n☕ Enjoy your drink!")

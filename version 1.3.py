@@ -26,18 +26,7 @@ def coffee_order():
             print("Sorry, we don't have that coffee on the menu.")
 
 
-print("\n~ ~ ~ WELCOME TO THE COFFEE SHOP ~ ~ ~")
-
-cart = []
-
-show_menu()
-
-while True:
-
-    # Coffee selection
-    order = coffee_order()
-
-    # Milk selection
+def milk_selection():
     milk = input("""
 Choose your milk:
 
@@ -65,7 +54,10 @@ Enter your choice:
         milk_name = "Regular"
         milk_price = 0
 
-    # Size selection
+    return milk_name, milk_price
+
+
+def size_selection():
     size = input("""
 Choose your size:
 
@@ -93,7 +85,10 @@ Enter your choice:
         size_name = "Small"
         size_price = 0
 
-    # Quantity
+    return size_name, size_price
+
+
+def get_quantity():
     while True:
         try:
             quantity = int(
@@ -101,14 +96,15 @@ Enter your choice:
             )
 
             if quantity > 0:
-                break
+                return quantity
 
             print("Quantity must be greater than 0. Please try again.")
 
         except ValueError:
             print("Please enter a valid number.")
 
-    # Order type
+
+def order_type_selection():
     order_type = input("""
 Choose order type:
 
@@ -119,20 +115,26 @@ Enter your choice:
 """)
 
     if order_type == "1":
-        order_type = "For here"
+        return "For here"
 
     elif order_type == "2":
-        order_type = "To go"
+        return "To go"
 
     else:
         print("Invalid order type. Defaulting to For here.")
-        order_type = "For here"
+        return "For here"
 
-    # Calculate price
+
+def calculate_total(order, milk_price, size_price, quantity):
     coffee_price = menu[order]
     total = (coffee_price + milk_price + size_price) * quantity
 
-    # Add order to cart
+    return total
+
+
+def add_to_cart(cart, order, milk_name, size_name,
+                quantity, order_type, total):
+
     cart.append({
         "coffee": order,
         "milk": milk_name,
@@ -141,6 +143,124 @@ Enter your choice:
         "order_type": order_type,
         "total": total
     })
+
+
+def show_cart(cart):
+    print("\n~ ~ ~ CURRENT ORDER ~ ~ ~")
+
+    for index, item in enumerate(cart, start=1):
+        print(
+            index,
+            ".",
+            item["coffee"],
+            "-",
+            item["size"],
+            "-",
+            item["milk"],
+            "- ₹",
+            item["total"]
+        )
+
+
+def remove_order(cart):
+    if len(cart) == 0:
+        print("Your cart is empty.")
+        return
+
+    show_cart(cart)
+
+    while True:
+        try:
+            remove = int(
+                input("\nWhich order would you like to remove? ")
+            )
+
+            if 1 <= remove <= len(cart):
+                removed_item = cart.pop(remove - 1)
+
+                print(
+                    removed_item["coffee"],
+                    "has been removed from your order."
+                )
+
+                break
+
+            else:
+                print(
+                    "Invalid order number. "
+                    "Please choose a number from the list."
+                )
+
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+def final_summary(cart):
+    print("\n~ ~ ~ YOUR ORDER ~ ~ ~")
+
+    grand_total = 0
+
+    if len(cart) == 0:
+        print("Your cart is empty.")
+
+    else:
+        for index, item in enumerate(cart, start=1):
+            print("\nItem", index)
+            print("Coffee:", item["coffee"])
+            print("Milk:", item["milk"])
+            print("Size:", item["size"])
+            print("Quantity:", item["quantity"])
+            print("Order Type:", item["order_type"])
+            print("Item Total: ₹", item["total"])
+
+            grand_total += item["total"]
+
+        print("\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
+        print("GRAND TOTAL: ₹", grand_total)
+
+
+print("\n~ ~ ~ WELCOME TO THE COFFEE SHOP ~ ~ ~")
+
+cart = []
+
+show_menu()
+
+
+while True:
+
+    # Coffee selection
+    order = coffee_order()
+
+    # Milk selection
+    milk_name, milk_price = milk_selection()
+
+    # Size selection
+    size_name, size_price = size_selection()
+
+    # Quantity
+    quantity = get_quantity()
+
+    # Order type
+    order_type = order_type_selection()
+
+    # Calculate price
+    total = calculate_total(
+        order,
+        milk_price,
+        size_price,
+        quantity
+    )
+
+    # Add order to cart
+    add_to_cart(
+        cart,
+        order,
+        milk_name,
+        size_name,
+        quantity,
+        order_type,
+        total
+    )
 
     print("\nAdded to your order!")
     print("Current item total: ₹", total)
@@ -162,52 +282,7 @@ What would you like to do?
             break
 
         elif choice == "2":
-
-            if len(cart) == 0:
-                print("Your cart is empty.")
-                continue
-
-            print("\n~ ~ ~ CURRENT ORDER ~ ~ ~")
-
-            for index, item in enumerate(cart, start=1):
-                print(
-                    index,
-                    ".",
-                    item["coffee"],
-                    "-",
-                    item["size"],
-                    "-",
-                    item["milk"],
-                    "- ₹",
-                    item["total"]
-                )
-
-            while True:
-
-                try:
-                    remove = int(
-                        input("\nWhich order would you like to remove? ")
-                    )
-
-                    if 1 <= remove <= len(cart):
-
-                        removed_item = cart.pop(remove - 1)
-
-                        print(
-                            removed_item["coffee"],
-                            "has been removed from your order."
-                        )
-
-                        break
-
-                    else:
-                        print(
-                            "Invalid order number. "
-                            "Please choose a number from the list."
-                        )
-
-                except ValueError:
-                    print("Please enter a valid number.")
+            remove_order(cart)
 
         elif choice == "3":
             break
@@ -219,30 +294,6 @@ What would you like to do?
         break
 
 
-# Final order summary
-print("\n~ ~ ~ YOUR ORDER ~ ~ ~")
-
-grand_total = 0
-
-if len(cart) == 0:
-
-    print("Your cart is empty.")
-
-else:
-
-    for index, item in enumerate(cart, start=1):
-
-        print("\nItem", index)
-        print("Coffee:", item["coffee"])
-        print("Milk:", item["milk"])
-        print("Size:", item["size"])
-        print("Quantity:", item["quantity"])
-        print("Order Type:", item["order_type"])
-        print("Item Total: ₹", item["total"])
-
-        grand_total += item["total"]
-
-    print("\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
-    print("GRAND TOTAL: ₹", grand_total)
+final_summary(cart)
 
 print("\nThank you for visiting! Enjoy your coffee!")
